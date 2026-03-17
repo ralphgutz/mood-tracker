@@ -92,6 +92,9 @@ async function submitEntry() {
         return;
     }
 
+    // Load music for the submitted mood before resetting
+    const submittedMood = selectedMood;
+
     // Reset form
     selectedMood = null;
     noteEl.value = "";
@@ -100,6 +103,7 @@ async function submitEntry() {
     entryDateEl.value = new Date().toISOString().slice(0, 10);
     updateSubmitBtn();
     loadEntries();
+    loadMusic(submittedMood);
 }
 
 /* ---------- Load Entries ---------- */
@@ -280,4 +284,40 @@ function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
+}
+
+/* ---------- Music Recommendations ---------- */
+async function loadMusic(mood) {
+    const card = document.getElementById("music-card");
+    const container = document.getElementById("music-tracks");
+
+    try {
+        const res = await fetch(`/api/music?mood=${mood}`);
+        if (!res.ok) {
+            card.style.display = "none";
+            return;
+        }
+        const tracks = await res.json();
+        if (!tracks.length) {
+            card.style.display = "none";
+            return;
+        }
+
+        container.innerHTML = tracks.map((t) => `
+            <div class="music-track">
+                <img src="${escapeHtml(t.album_image)}" alt="Album art">
+                <div class="music-info">
+                    <div class="song-name">${escapeHtml(t.name)}</div>
+                    <div class="artist">${escapeHtml(t.artist)}</div>
+                </div>
+            </div>
+            <div class="music-embed">
+                <iframe src="${escapeHtml(t.embed_url)}" width="100%" height="80" allow="encrypted-media"></iframe>
+            </div>
+        `).join("");
+
+        card.style.display = "block";
+    } catch {
+        card.style.display = "none";
+    }
 }
