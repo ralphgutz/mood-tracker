@@ -304,13 +304,6 @@ async function loadMusic(mood) {
         }
 
         container.innerHTML = tracks.map((t) => `
-            <div class="music-track">
-                <img src="${escapeHtml(t.album_image)}" alt="Album art">
-                <div class="music-info">
-                    <div class="song-name">${escapeHtml(t.name)}</div>
-                    <div class="artist">${escapeHtml(t.artist)}</div>
-                </div>
-            </div>
             <div class="music-embed">
                 <iframe src="${escapeHtml(t.embed_url)}" width="100%" height="80" allow="encrypted-media"></iframe>
             </div>
