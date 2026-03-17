@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <span class="brand">Mood Tracker</span>
+        <button class="nav-btn active" data-section="log">Log</button>
+        <button class="nav-btn" data-section="trends">Trends</button>
+        <button class="nav-btn" data-section="calendar">Calendar</button>
+    </div>
+</nav>
+
+<main>
+    <!-- ===== LOG SECTION ===== -->
+    <div id="section-log" class="section active">
+        <div class="card">
+            <h2>How are you feeling?</h2>
+            <div class="mood-buttons" id="mood-selector">
+                <button class="mood-btn" data-mood="1"><span class="emoji">&#128542;</span>Very Bad</button>
+                <button class="mood-btn" data-mood="2"><span class="emoji">&#128577;</span>Bad</button>
+                <button class="mood-btn" data-mood="3"><span class="emoji">&#128528;</span>Neutral</button>
+                <button class="mood-btn" data-mood="4"><span class="emoji">&#128578;</span>Good</button>
+                <button class="mood-btn" data-mood="5"><span class="emoji">&#128513;</span>Very Good</button>
+            </div>
+            <textarea id="note" placeholder="Write a short note about your day..." maxlength="500"></textarea>
+            <div class="char-count"><span id="char-count">0</span>/500</div>
+            <div class="form-row">
+                <input type="date" id="entry-date">
+                <button class="btn btn-primary" id="submit-btn" disabled>Save Entry</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Recent Entries</h2>
+            <div id="entries-list" class="entries-list">
+                <div class="empty-state">No entries yet — log your first mood above!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TRENDS SECTION ===== -->
+    <div id="section-trends" class="section">
+        <div class="card">
+            <h2>Mood Trends</h2>
+            <div class="filter-bar" id="trend-filters">
+                <button class="filter-btn" data-days="7">7 Days</button>
+                <button class="filter-btn active" data-days="30">30 Days</button>
+                <button class="filter-btn" data-days="90">90 Days</button>
+                <button class="filter-btn" data-days="all">All Time</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="trend-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Word Cloud -->
+        <div class="card">
+            <h2>Word Cloud</h2>
+            <div class="form-row" style="margin-top:0; margin-bottom:1rem;">
+                <input type="date" id="wc-start">
+                <span>to</span>
+                <input type="date" id="wc-end">
+                <button class="btn btn-secondary" id="wc-generate">Generate</button>
+            </div>
+            <div id="wordcloud-container">
+                <div class="empty-state">Select a date range and click Generate.</div>
+            </div>
+        </div>
+
+        <!-- Weekly Summary -->
+        <div class="card">
+            <h2>Weekly Summary</h2>
+            <button class="btn btn-secondary" id="summary-btn">View Weekly Summary</button>
+            <div id="summary-content"></div>
+        </div>
+    </div>
+
+    <!-- ===== CALENDAR SECTION ===== -->
+    <div id="section-calendar" class="section">
+        <div class="card">
+            <div class="calendar-nav">
+                <button id="cal-prev">&#9664;</button>
+                <span class="calendar-title" id="cal-title"></span>
+                <button id="cal-next">&#9654;</button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+    </div>
+</main>
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+        <h3 id="modal-title">Edit Entry</h3>
+        <div class="mood-buttons" id="modal-mood-selector">
+            <button class="mood-btn" data-mood="1"><span class="emoji">&#128542;</span>Very Bad</button>
+            <button class="mood-btn" data-mood="2"><span class="emoji">&#128577;</span>Bad</button>
+            <button class="mood-btn" data-mood="3"><span class="emoji">&#128528;</span>Neutral</button>
+            <button class="mood-btn" data-mood="4"><span class="emoji">&#128578;</span>Good</button>
+            <button class="mood-btn" data-mood="5"><span class="emoji">&#128513;</span>Very Good</button>
+        </div>
+        <textarea id="modal-note" maxlength="500" placeholder="Update your note..."></textarea>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
+            <button class="btn btn-danger" id="modal-delete">Delete</button>
+            <button class="btn btn-primary" id="modal-save">Save</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/heatmap.js"></script>
+</body>
+</html>
